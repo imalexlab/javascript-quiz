@@ -15,6 +15,15 @@
 
 <script>
   export let question;
+  let displayAnswer = false;
+  let userAnswered;
+
+  function handleChange(e) {
+    const userAnswer = e.target.value;
+    userAnswered = true;
+
+    if (userAnswer === question.answer) displayAnswer = true;
+  }
 </script>
 
 <style>
@@ -67,11 +76,32 @@
   <form>
     <fieldset id="choices">
       {#each question.choices as choice}
-      <div>
-          <input type="radio" id={choice.key} value={choice.value} name="choices" >
-          <label for={choice.key}>{choice.key}:  {choice.value}</label>
-      </div>
+        <div>
+          <input
+            type="radio"
+            id={choice.key}
+            value={choice.key}
+            name="choices"
+            on:change={handleChange}
+            disabled={userAnswered}
+            />
+          <label for={choice.key}>{choice.key}: {choice.value}</label>
+        </div>
       {/each}
     </fieldset>
   </form>
+  {#if userAnswered}
+    {#if displayAnswer}
+      <p>Correct! Answer is: {question.answer}</p>
+      <p>
+        {@html question.explanation}
+      </p>
+    {:else}
+      <p>Wrong answer :(</p>
+      <p>Correct answer was: {question.answer}</p>
+      <p>
+        {@html question.explanation}
+      </p>
+    {/if}
+  {/if}
 </div>
