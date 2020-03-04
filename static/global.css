@@ -24,17 +24,33 @@ a {
 	color: inherit;
 }
 
+pre {
+  display: inline-flex;
+  width: auto;
+  background-color: #f0f0f0;
+  border: 1px solid #323454;
+  border-radius: 15px;
+  padding: 6px;
+}
+
 code {
 	font-family: menlo, inconsolata, monospace;
 	font-size: calc(1em - 2px);
-	color: #555;
+	color: #323454;
 	background-color: #f0f0f0;
-	padding: 0.2em 0.4em;
-	border-radius: 2px;
+  padding: 1.4em 1.4em;
+  display: flex;
+  min-width: 300px;
 }
 
 @media (min-width: 400px) {
 	body {
 		font-size: 16px;
 	}
+}
+
+
+.snippet {
+	font-family: menlo, inconsolata, monospace;
+	font-size: calc(1em - 2px);
 }

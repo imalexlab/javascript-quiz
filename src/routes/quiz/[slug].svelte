@@ -14,9 +14,15 @@
 </script>
 
 <script>
+  import { afterUpdate } from "svelte";
+  import { questionStore } from "../../stores/questionStore.js";
   export let question;
   let displayAnswer = false;
   let userAnswered;
+
+  afterUpdate(() => {
+    questionStore.changeQuestion(question.id);
+  });
 
   function handleChange(e) {
     const userAnswer = e.target.value;
@@ -27,36 +33,48 @@
 </script>
 
 <style>
-  .content :global(h2) {
-    font-size: 1.4em;
-    font-weight: 500;
+  h1 {
+    text-align: center;
   }
 
-  .content :global(pre) {
-    background-color: #f9f9f9;
-    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.05);
-    padding: 0.5em;
-    border-radius: 2px;
-    overflow-x: auto;
+  label {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: baseline;
   }
 
-  .content :global(pre) :global(code) {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  .content :global(ul) {
-    line-height: 1.5;
-  }
-
-  .content :global(li) {
-    margin: 0 0 0.5em 0;
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   #choices {
     border: none;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .choice {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #b8b8d1;
+    padding: 1rem;
+    align-items: center;
+    border-radius: 20px;
+    margin: 0.875rem;
+    width: 300px;
+  }
+
+  .choiceKey {
+    font-weight: 800;
+    font-size: 20px;
+    margin-right: 5px;
   }
 </style>
 
@@ -66,26 +84,29 @@
 
 <div class="content">
   <h1>{question.question}</h1>
+  <h1>{$questionStore}</h1>
   {#if question.snippet}
     <pre>
-      <code>
-        <code>{question.snippet}</code>
-      </code>
+      <code>{question.snippet}</code>
     </pre>
   {/if}
   <form>
     <fieldset id="choices">
       {#each question.choices as choice}
-        <div>
+        <div class="choice">
+          <label for={choice.key}>
+            <span class="choiceKey">{choice.key}:</span>
+            <p>
+              {@html choice.value}
+            </p>
+          </label>
           <input
             type="radio"
             id={choice.key}
             value={choice.key}
             name="choices"
             on:change={handleChange}
-            disabled={userAnswered}
-            />
-          <label for={choice.key}>{choice.key}: {choice.value}</label>
+            disabled={userAnswered} />
         </div>
       {/each}
     </fieldset>
@@ -104,4 +125,6 @@
       </p>
     {/if}
   {/if}
+
+  <a rel="prefetch" href="quiz/{$questionStore}">Change question</a>
 </div>

@@ -38,3 +38,5 @@
 {#if dev && error.stack}
 	<pre>{error.stack}</pre>
 {/if}
+
+<a href="">Go to HomePage</a>

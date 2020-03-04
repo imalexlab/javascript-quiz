@@ -8,7 +8,7 @@ fs.readFile('./en.json', 'utf-8', (err, data) => {
   tutu = JSON.parse(data)
   tutu.forEach((element, i) => {
     tutu[i].snippet = element.snippet.join('\n')
-    tutu[i].slug = randomstring.generate({capitalization: 'lowercase'});
+    tutu[i].slug = `${i + 1}`;
     const choices = tutu[i].choices
     tutu[i].choices = []
 
